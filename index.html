@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>InView-JS</title>
+		<style type="text/css">
+		
+			/* Demo CSS */
+			
+			@import url('https://fonts.googleapis.com/css?family=Anonymous+Pro|Roboto+Condensed:700|Roboto:300');
+
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			html {
+				background: repeating-linear-gradient(-45deg, #FFF 0em, #FFF 1.5em, #F0F0F0 1.5em, #F0F0F0 3em) fixed;
+				font-family: 'Roboto', sans-serif;
+				font-size: 1vw;
+				font-weight: 300;
+				line-height: 1.8em;
+				min-height: 100%;
+				overflow: auto;
+			}
+			
+			body {
+				color: #666;
+				padding: 1.8em;
+				text-align: center;
+			}
+			
+			header, main {
+				background: #FFF;
+				box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
+				margin: 1.8rem auto;
+				padding: 0.9rem 0;
+				text-align: left;
+				width: 75vw;
+			}
+			
+			h1, h2, h3, h4, h5, h6, p, li {
+				padding: 0.45em 2.7rem;
+			}
+			
+			h1, h3, h5 {
+				font-family: 'Roboto Condensed', sans-serif;
+				font-size: 3rem;
+				font-weight: 700;
+				line-height: 1.8em;
+			}
+			
+			h2, h4, h6, p, li {
+				font-family: Roboto, sans-serif;
+				font-size: 1rem;
+				font-weight: 300;
+				line-height: 1.8em;
+			}
+			
+			code {
+				background: #333;
+				color: #CCC;
+				border-left: 0.375em solid #F06;
+				display: block;
+				font-family: 'Anonymous Pro', serif;
+				font-weight: 400;
+				margin: 0 2.7rem;
+				overflow: auto;
+				padding: 0.9em 2.25em;
+				white-space: pre;
+			}
+			
+			code:hover {
+				color: #FFF;
+			}
+			
+			section {
+				background: #000;
+				height: 200px;
+				margin: 1.8em 2.25em;
+			}
+			
+			.PartialView {
+				background: #f49c16;
+			}
+			
+			.InView {
+				background: #27ae61;
+			}
+			
+			@media (max-width: 1000px) {
+				
+				html {
+					font-size: 16px;
+				}
+			
+				header, main {
+					width: auto;
+				}
+			
+			}
+		
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>InView-JS</h1>
+			<h2>Check when HTML elements are inside the viewport with IntersectionObserver (to keep test off main thread). You can either add classes for various states or provide your own JS callback function.</h2>
+			
+			<h3>Usage</h3>
+			<h4>To use, simply insert a script with a src pointing to inview.js, then initialise it with &ldquo;new ViewTracker('Selector')&rdquo; where &ldquo;Selector&rdquo; is a valid CSS selector.</h4>
+			<code>&lt;script type="text/javascript" src="js/inview.0.1.ug.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+	(function(){
+		new ViewTracker('section');
+	})();
+&lt;/script&gt;
+</code>
+
+			<h3>Optional Parameters</h3>
+			<h4><strong>UserOptions</strong> <em>[Object]</em></h4>
+			<p>Specify your own classes by passing an object as the second parameter. If specified, must be the 2nd parameter. Example:</p>
+			<code>new ViewTracker('Selector', {
+	Hidden : 'Invisible',
+	Partial : 'PeekingOut',
+	Visible : 'FullyInView',
+});</code>
+			<h4><strong>CallBack</strong> <em>[Function]</em></h4>
+			<p>Specify your own callback function to run custom code when the element comes into view. Can be used as 2nd parameter if &ldquo;UserOptions&rdquo; is ommitted. The callback contains 2 parameters. Element - the HTML element. Visibility - A float indicating the level of visibility between 0.0 (fully outside viewport) and 1.0 (fully inside viewport). Example:</p>
+			<code>new ViewTracker('Selector', function(Element, Visibility){
+	Element.innerHTML = Visibility;
+});</code>
+			
+		</header>
+		<main>
+			<h3>Demo</h3>
+			<h4>Black - outside viewport, Green - fully inside viewport, Yellow - partially inside viewport</h4>
+			<section></section>
+			<section></section>
+			<section></section>
+			<section></section>
+			<section></section>
+			<section></section>
+			<section></section>
+			<section></section>
+			<section></section>
+			<section></section>
+			<section></section>
+			<section></section>
+			<section></section>
+		</main>
+		<script type="text/javascript" src="js/inview.0.1.ug.js"></script>
+		<script type="text/javascript">
+		
+			(function(){
+			
+				new ViewTracker('section');
+			
+			})();
+		
+		</script>
+	</body>
+</html>
