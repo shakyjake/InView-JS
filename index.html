@@ -74,17 +74,26 @@
 				color: #FFF;
 			}
 			
+			.inline-code {
+				border: none;
+				border-radius: 0.25em;
+				display: inline;
+				margin: 0;
+				padding: 0 0.45em;
+				white-space: normal;
+			}
+			
 			section {
 				background: #000;
 				height: 200px;
 				margin: 1.8em 2.25em;
 			}
 			
-			.PartialView {
+			.inview--partial {
 				background: #f49c16;
 			}
 			
-			.InView {
+			.inview--full {
 				background: #27ae61;
 			}
 			
@@ -108,28 +117,31 @@
 			<h2>Check when HTML elements are inside the viewport with IntersectionObserver (to keep test off main thread). You can either add classes for various states or provide your own JS callback function.</h2>
 			
 			<h3>Usage</h3>
-			<h4>To use, simply insert a script with a src pointing to inview.js, then initialise it with &ldquo;new ViewTracker('Selector')&rdquo; where &ldquo;Selector&rdquo; is a valid CSS selector.</h4>
-			<code>&lt;script type="text/javascript" src="js/inview.0.1.ug.js"&gt;&lt;/script&gt;
+			<h4>To use, simply insert a script with a src pointing to inview.js, then initialise it with &ldquo;new InView('Selector')&rdquo; where &ldquo;Selector&rdquo; is a valid CSS selector.</h4>
+			<code>&lt;script type="text/javascript" src="js/inview.0.6.ug.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 	(function(){
-		new ViewTracker('section');
+		new InView('section');
 	})();
 &lt;/script&gt;
 </code>
 
 			<h3>Optional Parameters</h3>
-			<h4><strong>UserOptions</strong> <em>[Object]</em></h4>
+			<h4><strong>user_options</strong> <em>[Object]</em></h4>
 			<p>Specify your own classes by passing an object as the second parameter. If specified, must be the 2nd parameter. Example:</p>
-			<code>new ViewTracker('Selector', {
-	Hidden : 'Invisible',
-	Partial : 'PeekingOut',
-	Visible : 'FullyInView',
+			<code>new InView('Selector', {
+	hidden : 'inview--hidden',/* ClassName to be added when element is outside the viewport */
+	partial : 'inview--partial',/* ClassName to be added when element is partially in view */
+	visible : 'inview--full',/* ClassName to be added when element is fully in view */
+	steps : 10,/* Number of IntersectionObserver steps */
+	once: false/* Stop checking when observed element has become visible? */
 });</code>
-			<h4><strong>CallBack</strong> <em>[Function]</em></h4>
-			<p>Specify your own callback function to run custom code when the element comes into view. Can be used as 2nd parameter if &ldquo;UserOptions&rdquo; is ommitted. The callback contains 2 parameters. Element - the HTML element. Visibility - A float indicating the level of visibility between 0.0 (fully outside viewport) and 1.0 (fully inside viewport). Example:</p>
-			<code>new ViewTracker('Selector', function(Element, Visibility){
-	Element.innerHTML = Visibility;
-});</code>
+			<h3>Events</h3>
+			<p>The following events are available:</p>
+			<p><code class="inline-code">inview_initialised</code> - fired on <code class="inline-code">window</code> after the InView script has initialised</p>
+			<p><code class="inline-code">inview_hidden</code> - fired on the observed node when the visibility has changed to hidden</p>
+			<p><code class="inline-code">inview_partial</code> - fired on the observed node when it becomes partially visible</p>
+			<p><code class="inline-code">inview_visible</code> - fired on the observed node when it becomes fully visible</p>
 			
 		</header>
 		<main>
@@ -149,12 +161,12 @@
 			<section></section>
 			<section></section>
 		</main>
-		<script type="text/javascript" src="js/inview.0.1.ug.js"></script>
+		<script type="text/javascript" src="js/inview.0.6.ug.js"></script>
 		<script type="text/javascript">
 		
 			(function(){
 			
-				new ViewTracker('section');
+				new InView('section');
 			
 			})();
 		
