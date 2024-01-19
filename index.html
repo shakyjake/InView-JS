@@ -84,7 +84,7 @@
 			}
 			
 			section {
-				background: #000;
+				background: #F06;
 				height: 200px;
 				margin: 1.8em 2.25em;
 			}
@@ -122,7 +122,7 @@
 			
 			<h3>Usage</h3>
 			<h4>To use, simply insert a script with a src pointing to inview.js, then initialise it with &ldquo;new InView('Selector')&rdquo; where &ldquo;Selector&rdquo; is a valid CSS selector.</h4>
-			<code>&lt;script type="text/javascript" src="js/inview-1.0.0.ug.js"&gt;&lt;/script&gt;
+			<code>&lt;script src="js/inview-1.0.0.ug.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 	(function(){
 		new InView('section');
@@ -149,10 +149,38 @@
 			<p><code class="inline-code">inview_partial</code> - fired on the observed node when it becomes partially visible</p>
 			<p><code class="inline-code">inview_visible</code> - fired on the observed node when it becomes fully visible</p>
 			
+			<h3>Fixing Cumulative Layout Shift</h3>
+			<p>Turns out this is pretty good at improving the CLS scores on Lighthouse (or whatever dodgy service you're using that's charging you to run Lighthouse on a bargain-bin server). </p>
+			<p>First things first, I stick an inline style in the <code class="inline-code">&lt;head&gt;</code> (before any other stylesheets are declared)</p>
+			<code>&lt;style&gt;
+	.cls { opacity: 0 } 
+	.cls__seen {
+		opacity: 1;
+		transition: opacity 0.3s linear;
+	} 
+&lt;/style&gt;</code>
+			<p>Then we want to request the JS file in a script somewhere near the bottom of the document, deferred and then triggered on window load:</p>
+			<code>&lt;script defer src="js/inview-1.0.0.ug.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+	function inview_cls_setup(){
+		new InView('.cls', {
+			hidden : 'cls',
+			partial : 'cls__seen',
+			visible : 'cls__seen',
+			once : true
+		});
+	}
+	(() => {
+		window.addEventListener('load', inview_cls_setup);
+	})();
+&lt;/script&gt;
+</code>
+			<p>And then just stick the <code class="inline-code">cls</code> class on any HTML element that's giving you Cumulative Layout Shift.</p>
+			
 		</header>
 		<main>
 			<h3>Demo</h3>
-			<h4>Black - outside viewport, Green - fully inside viewport, Yellow - partially inside viewport</h4>
+			<h4>Red - outside viewport, Green - fully inside viewport, Yellow - partially inside viewport, Magenta - something has gone wrong, check your browser console</h4>
 			<section></section>
 			<section></section>
 			<section></section>
@@ -167,8 +195,8 @@
 			<section></section>
 			<section></section>
 		</main>
-		<script type="text/javascript" src="js/inview-1.0.0.ug.js"></script>
-		<script type="text/javascript">
+		<script src="js/inview-1.0.0.ug.js"></script>
+		<script>
 		
 			(function(){
 			
